@@ -1,16 +1,26 @@
-# React + Vite
+# College Decision Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Search 114+ colleges to see admission rates and predicted ED/EA/RD decision release dates.
 
-Currently, two official plugins are available:
+## How to run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Then open **http://localhost:5173** in your browser.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## How to build for production
 
-## Expanding the ESLint configuration
+```bash
+npm run build
+npm run preview
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+- Search any college by name
+- See admission rate for each college
+- Historical ED / Early Action / Regular Decision release dates (2021–2025)
+- Predicted next release date based on weighted trend of past years
+- 114 colleges: Ivy League, elite privates, liberal arts colleges, and top public universities

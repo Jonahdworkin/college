@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { colleges } from './data/colleges';
+import CollegeDetail from './components/CollegeDetail';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const TYPE_BADGE_COLOR = {
+  'Private Research University': '#e3f2fd',
+  'Public Research University': '#e8f5e9',
+  'Liberal Arts College': '#fce4ec',
+  'Public Liberal Arts University': '#f3e5f5',
+  'Private University': '#fff8e1',
+};
+
+export default function App() {
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState(null);
+
+  if (selected) {
+    return <CollegeDetail college={selected} onBack={() => setSelected(null)} />;
+  }
+
+  const filtered = colleges.filter((c) =>
+    c.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+    <div className="app">
+      <header className="site-header">
+        <h1 className="site-title">🎓 College Decision Tracker</h1>
+        <p className="site-subtitle">
+          Search any college to see its admission rate and predicted decision release dates
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      </header>
 
-export default App
+      <main className="main-content">
+        <div className="search-bar-wrap">
+          <input
+            className="search-bar"
+            type="text"
+            placeholder="Search colleges…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            autoFocus
+          />
+        </div>
+
+        <p className="result-count">
+          {filtered.length === colleges.length
+            ? `${colleges.length} colleges in database`
+            : `${filtered.length} of ${colleges.length} colleges`}
+        </p>
+
+        <div className="card-grid">
+          {filtered.map((c) => (
+            <button
+              key={c.id}
+              className="college-card"
+              onClick={() => setSelected(c)}
+            >
+              <div className="card-name">{c.name}</div>
+              <div className="card-location">📍 {c.location}</div>
+              <div className="card-footer">
+                <span
+                  className="card-type-badge"
+                  style={{ background: TYPE_BADGE_COLOR[c.type] || '#f5f5f5' }}
+                >
+                  {c.type}
+                </span>
+                <span
+                  className="card-rate"
+                  style={{
+                    color: c.admissionRate <= 10 ? '#c62828' :
+                           c.admissionRate <= 20 ? '#e65100' :
+                           c.admissionRate <= 40 ? '#f57f17' : '#2e7d32',
+                  }}
+                >
+                  {c.admissionRate}% admit
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <p className="no-results">No colleges match "{query}"</p>
+        )}
+      </main>
+    </div>
+  );
+}
